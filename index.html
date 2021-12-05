@@ -1,23 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <style>
+        div{
+           background-color:rgb(0, 0, 0);
+           border-style: solid;
+           border-width: 1px;
+           max-width: 500px;
+           text-align: center;
+           font-family: 'Times New Roman';
+           padding: 50px;
+           margin: auto;
+       }</style>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>assignment-1-alwaysyu</title>
+    <title>Learn WebGL</title>
 </head>
-<style>
-    #myCanvas{
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%); 
-    }
-</style>
 <body onload="main()">
-    <canvas width="700" height="700" id="myCanvas" style="border: 1px solid black;">
+    <div id="Div1">
+    <canvas width="500" height="500" id="myCanvas" style="border: 1px solid black;">
         Your browser does not support WebGL rendering.
     </canvas>
-    <script src="main.js"></script>
+    <script src="gl-matrix-min.js"></script>
+    <script src="main.js"></script> 
+</div>
 </body>
 </html>
