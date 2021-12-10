@@ -510,6 +510,10 @@ function main() {
         if (event.keyCode == 40) cameraDeltaZoom =  1.01;//Down
         if (event.keyCode == 39) cameraRotationTheta = 1.0;//Left
         if (event.keyCode == 37) cameraRotationTheta = -1.0;//Right
+		for (let i = 0; i < cube.length; i += 10) {
+			cube[i] += cubeDeltaX;
+			cube[i+2] += cubeDeltaZ;
+		}
     }
     function onKeyup(event) {
         if (event.keyCode == 87) cubeDeltaZ = 0.0;//W
@@ -520,6 +524,10 @@ function main() {
         if (event.keyCode == 40) cameraDeltaZoom =  1.0;//Down
         if (event.keyCode == 39) cameraRotationTheta = 0.0;//Left
         if (event.keyCode == 37) cameraRotationTheta = 0.0;//Right
+		for (let i = 0; i < cube.length; i += 10) {
+			cube[i] += cubeDeltaX;
+			cube[i+2] += cubeDeltaZ;
+		}
     }
     document.addEventListener("keyup", onKeyup, false);
     document.addEventListener("keydown", onKeydown, false);
