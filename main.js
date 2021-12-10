@@ -3,6 +3,10 @@ function main() {
 	var canvas = document.getElementById("myCanvas");   // The paper
 	var gl = canvas.getContext("webgl");                // The brush and the paints
 
+	function degToRad(degrees) {
+		return degrees * (Math.PI/180);
+	}
+
 	// Define vertices data consisting of position and color properties
     var cube = [
         0.1,  0.6,  -0.1,  1,  0,  0,  255/255,  255/255,  255/255,  10,  
@@ -493,6 +497,53 @@ function main() {
 	document.addEventListener("mouseup", onMouseUp, false);
 	document.addEventListener("mousemove", onMouseMove, false);
 
+	var cubeDeltaZ = 0.0;
+    var cubeDeltaX = 0.0;
+    var cameraDeltaZoom = 1.0;
+    var cameraRotationTheta = 0;
+    function onKeydown(event) {
+        if (event.keyCode == 87) cubeDeltaZ = -0.01;//W
+        if (event.keyCode == 83) cubeDeltaZ =  0.01;//S
+        if (event.keyCode == 65) cubeDeltaX = -0.01;//A
+        if (event.keyCode == 68) cubeDeltaX =  0.01;//D
+        if (event.keyCode == 38) cameraDeltaZoom = 0.99;//Up
+        if (event.keyCode == 40) cameraDeltaZoom =  1.01;//Down
+        if (event.keyCode == 39) cameraRotationTheta = 1.0;//Left
+        if (event.keyCode == 37) cameraRotationTheta = -1.0;//Right
+    }
+    function onKeyup(event) {
+        if (event.keyCode == 87) cubeDeltaZ = 0.0;//W
+        if (event.keyCode == 83) cubeDeltaZ =  0.0;//S
+        if (event.keyCode == 65) cubeDeltaX = 0.0;//A
+        if (event.keyCode == 68) cubeDeltaX =  0.0;//D
+        if (event.keyCode == 38) cameraDeltaZoom = 1.0;//Up
+        if (event.keyCode == 40) cameraDeltaZoom =  1.0;//Down
+        if (event.keyCode == 39) cameraRotationTheta = 0.0;//Left
+        if (event.keyCode == 37) cameraRotationTheta = 0.0;//Right
+    }
+    document.addEventListener("keyup", onKeyup, false);
+    document.addEventListener("keydown", onKeydown, false);
+
+	function updateLight() {
+        lightPosition[0] += cubeDeltaX;
+        lightPosition[2] += cubeDeltaZ;
+        gl.uniform3fv(uLightPosition, lightPosition);
+    }
+
+    function updateCamera() {
+        camera[0] *= cameraDeltaZoom;
+        camera[2] *= cameraDeltaZoom;
+        glMatrix.vec3.rotateY(camera, camera, [0, 0, 0], degToRad(cameraRotationTheta));
+        // console.log(camera);
+        glMatrix.mat4.lookAt(
+            view,
+            camera,      // camera position
+            camNow,      // the point where camera looks at
+            [0, 1, 0]       // up vector of the camera
+        );
+        gl.uniformMatrix4fv(uView, false, view);
+    }
+
 	function render() {
         vertices = [...vertic, ...cube, ...plane];
 		gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
@@ -502,6 +553,8 @@ function main() {
 			gl.STATIC_DRAW
 		);
 		gl.uniform3fv(uLightPosition, lightPosition);
+		updateLight();
+        updateCamera();
 		// Init the model matrix
 		var model = glMatrix.mat4.create();
 		glMatrix.mat4.multiply(model, model, rotation);
