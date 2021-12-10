@@ -410,43 +410,6 @@ function main() {
 	);
 	gl.uniform3fv(uViewerPosition, camera);
 
-	function onKeyPressed(event) {
-		if (event.keyCode == 87) {
-			for (let i = 0; i < cube.length; i += 10) {
-				cube[i + 1] += 0.04;
-				lightPosition[1] += 0.04 * 1 / 20;
-				console.log("Test");
-			}
-		} else if (event.keyCode == 83) {
-			for (let i = 0; i < cube.length; i += 10) {
-				cube[i + 1] -= 0.04;
-				lightPosition[1] -= 0.04 * 1 / 20;
-			}
-		} else if (event.keyCode == 65) {
-			camera[0] -= 0.04;
-			camNow[0] -= 0.04;
-			glMatrix.mat4.lookAt(
-				view,
-				camera, // camera position
-				camNow, // the point where camera looks at
-				[0, 1, 0] // up vector of the camera
-			);
-			gl.uniformMatrix4fv(uView, false, view);
-		} else if (event.keyCode == 68) {
-			camera[0] += 0.04;
-			camNow[0] += 0.04;
-			glMatrix.mat4.lookAt(
-				view,
-				camera, // camera position
-				camNow, // the point where camera looks at
-				[0, 1, 0] // up vector of the camera
-			);
-			gl.uniformMatrix4fv(uView, false, view);
-		}
-	}
-
-	document.addEventListener("keydown", onKeyPressed, false);
-
 	function render() {
         vertices = [...vertic, ...cube];
 		gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
